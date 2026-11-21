@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.models import Tenant, Role, User # Assumed
+from app.models import Tenant # Assumed
 from app.database import get_db
 from app.core.security import hash_api_key
 

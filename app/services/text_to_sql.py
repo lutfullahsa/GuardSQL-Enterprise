@@ -1,6 +1,5 @@
 import os
 from openai import OpenAI
-import re
 
 class TextToSQLService:
     def __init__(self):

@@ -1,5 +1,4 @@
 import hashlib
-import secrets
 from fastapi import Header, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.models import Tenant  # Assuming models exists
