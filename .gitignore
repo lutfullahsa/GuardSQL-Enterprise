@@ -1,8 +1,8 @@
-.venv
+.venv/
+__pycache__/
+*.py[cod]
 .env
-__pycache__
-*.pyc
 *.db
-.pytest_cache
-.ruff_cache
-.vscode
+*.sqlite3
+.pytest_cache/
+.ruff_cache/

@@ -1,15 +1,14 @@
+from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional, List
+from app.schemas.validation import SQLValidationResult
+
 
 class NaturalLanguageQueryRequest(BaseModel):
     user_id: str
     prompt: str
     execute_query: bool = False
-    language: Optional[str] = None
+    language: str | None = None
 
-class SQLValidationResult(BaseModel):
-    status: str
-    message: str
 
 class NaturalLanguageQueryResponse(BaseModel):
     audit_id: str
@@ -18,13 +17,20 @@ class NaturalLanguageQueryResponse(BaseModel):
     role_name: str
     generated_sql: str
     validation_result: SQLValidationResult
-    execution_preview: Optional[List[dict]] = None
+    execution_preview: list[dict] | None = None
     execution_time_ms: int
 
+
 class AuditLogOut(BaseModel):
-    id: int
-    tenant_id: int
-    user_id: str
-    query: str
+    id: str
+    user_id: str | None
+    target_dialect: str
+    natural_language_prompt: str
+    generated_sql: str | None
     status: str
-    timestamp: str
+    block_reason: str | None
+    estimated_cost: int | None
+    execution_time_ms: int | None
+    created_at: datetime
+
+    model_config = {"from_attributes": True}

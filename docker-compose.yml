@@ -9,10 +9,19 @@ services:
       POSTGRES_DB: guard
   api:
     build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://user:password@db:5432/guard
+    depends_on:
+      - db
     ports:
       - "8000:8000"
   frontend:
     build: .
+    environment:
+      API_BASE_URL: http://api:8000
+    depends_on:
+      - api
     command: streamlit run frontend/streamlit_app.py --server.port 8501 --server.enableCORS false
     ports:
       - "8501:8501"
+
