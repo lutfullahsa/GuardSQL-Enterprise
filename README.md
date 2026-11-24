@@ -40,6 +40,20 @@ flowchart LR
 
 ## 🚀 Quick Start (Local Development)
 
+### Option A: One-Click Launcher (Recommended for Local Testing)
+- **Windows (PowerShell):**
+  `powershell
+  pip install -r requirements.txt
+  .\start.ps1
+  `
+- **Linux / macOS:**
+  `ash
+  pip install -r requirements.txt
+  chmod +x start.sh && ./start.sh
+  `
+
+### Option B: Manual Two-Terminal Setup
+
 ### 1. Start the FastAPI Security Gateway
 ```bash
 pip install -r requirements.txt
