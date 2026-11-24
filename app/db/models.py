@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Boolean, ForeignKey, Integer, JSON, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -22,7 +22,7 @@ class Tenant(Base):
     target_db_dialect: Mapped[str] = mapped_column(String(50), default="postgres", nullable=False)
     max_query_cost_limit: Mapped[int] = mapped_column(Integer, default=10000, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
 
     roles: Mapped[list["Role"]] = relationship(back_populates="tenant", cascade="all, delete-orphan")
     users: Mapped[list["User"]] = relationship(back_populates="tenant", cascade="all, delete-orphan")
@@ -38,7 +38,7 @@ class Role(Base):
     allowed_schema_map: Mapped[dict] = mapped_column(JSONType, default=dict, nullable=False)
     allowed_statements: Mapped[list] = mapped_column(JSONType, default=lambda: ["SELECT"], nullable=False)
     can_bypass_cost_limit: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
 
     tenant: Mapped["Tenant"] = relationship(back_populates="roles")
     users: Mapped[list["User"]] = relationship(back_populates="role")
@@ -73,4 +73,4 @@ class QueryAuditLog(Base):
     block_reason: Mapped[str | None] = mapped_column(String, nullable=True)
     estimated_cost: Mapped[int | None] = mapped_column(Integer, nullable=True)
     execution_time_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
