@@ -68,9 +68,9 @@ t = TEXTS[lang]
 st.title(t["title"])
 st.caption(t["subtitle"])
 
-if "seed_data" not in st.session_state:
+if not st.session_state.get("seed_data"):
     try:
-        r = requests.post(f"{API_BASE_URL}/api/v1/tenants/seed-demo", timeout=3)
+        r = requests.post(f"{API_BASE_URL}/api/v1/tenants/seed-demo", timeout=10)
         if r.status_code == 200:
             st.session_state["seed_data"] = r.json()
     except Exception:
@@ -79,7 +79,7 @@ if "seed_data" not in st.session_state:
 st.sidebar.header(t["sidebar_header"])
 if st.sidebar.button(t["seed_btn"], use_container_width=True):
     try:
-        r = requests.post(f"{API_BASE_URL}/api/v1/tenants/seed-demo", timeout=5)
+        r = requests.post(f"{API_BASE_URL}/api/v1/tenants/seed-demo", timeout=10)
         if r.status_code == 200:
             st.session_state["seed_data"] = r.json()
             st.sidebar.success(t["seed_ok"])
@@ -154,7 +154,7 @@ col_a2.button(t["refresh_btn"], use_container_width=True)
 
 if seed_data:
     try:
-        logs_resp = requests.get(f"{API_BASE_URL}/api/v1/query/audit-logs", headers={"X-API-Key": api_key}, timeout=5)
+        logs_resp = requests.get(f"{API_BASE_URL}/api/v1/query/audit-logs", headers={"X-API-Key": api_key}, timeout=10)
         if logs_resp.status_code == 200 and logs_resp.json():
             st.dataframe(logs_resp.json(), use_container_width=True)
     except Exception:
