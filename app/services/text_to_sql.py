@@ -33,7 +33,7 @@ class TextToSQLService:
         p = prompt.lower()
         if "sipariş" in p or "order" in p:
             return "SELECT id, customer_name, total_amount, status FROM orders LIMIT 10"
-        if "maaş" in p or "salary" in p:
+        if any(k in p for k in ("maaş", "salary", "salaries", "employee", "çalışan")):
             return "SELECT employee_name, salary FROM hr_salaries"
         if "sil" in p or "drop" in p:
             return "DROP TABLE users"
